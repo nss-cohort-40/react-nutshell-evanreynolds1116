@@ -14,6 +14,11 @@ const NewsList = props => {
       setNews(newsFromAPI);
     })
   };
+
+  const deleteNews = id => {
+    NewsManager.delete(id)
+    .then(() => NewsManager.getAll().then(setNews));
+  }
   
   // got the news from the API on the component's first render
   useEffect(() => {
@@ -27,14 +32,15 @@ const NewsList = props => {
       <section className="section-content">
         <button type="button"
           className="btn"
-          onClick={() => {props.history.push("/new")}}>
+          onClick={() => {props.history.push("/news/newNews")}}>
         Add News Article
         </button>
       </section>
       <div className="container-cards">
+      <h1>News</h1>
         {news.map(newz => {
         if (sessionStorage.activeUser == newz.userId) {
-        return <NewsCard key={newz.id} newz={newz} />
+        return <NewsCard key={newz.id} newz={newz} deleteNews={deleteNews} {...props}/>
         } 
         }
         )}

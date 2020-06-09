@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import NewsManager from '../../modules/NewsManager';
+import React, { useState, useEffect } from "react"
+import NewsManager from "../../modules/NewsManager"
 
-const NewsForm = props => {
-  const [news, setNews] = useState({ title: "", synopsis: "", url: "", userId: sessionStorage.activeUser });
+const NewsEditForm = props => {
+  const [news, setNews] = useState({ title: "", synopsis: "", url: "" });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleFieldChange = evt => {
@@ -11,19 +11,29 @@ const NewsForm = props => {
     setNews(stateToChange);
   };
 
-  /*  Local method for validation, set loadingStatus, create news      object, invoke the NewsManager post method, and redirect to the full animal list
-  */
-  const constructNewArticle = evt => {
-    evt.preventDefault();
-    if (news.title === "" || news.synopsis === "") {
-      window.alert("Please input an title and synopsis");
-    } else {
-      setIsLoading(true);
-      // Create the news article and redirect user to news list
-      NewsManager.post(news)
-        .then(() => props.history.push("/news"));
-    }
-  };
+  const updateExistingNews = evt => {
+    evt.preventDefault()
+    setIsLoading(true);
+
+    // This is an edit, so we need the id
+    const editedNews = {
+      id: props.match.params.newsId,
+      title: news.title,
+      synopsis: news.synopsis,
+      url: news.url
+    };
+
+    NewsManager.update(editedNews)
+      .then(() => props.history.push("/news"))
+  }
+
+  useEffect(() => {
+    NewsManager.get(props.match.params.newsId)
+      .then(news => {
+        setNews(news);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <>
@@ -36,7 +46,7 @@ const NewsForm = props => {
               required
               onChange={handleFieldChange}
               id="title"
-              placeholder="Article Title"
+              value={news.title}
             />
             <label htmlFor="synopsis">Synopsis</label>
             <input
@@ -44,7 +54,7 @@ const NewsForm = props => {
               required
               onChange={handleFieldChange}
               id="synopsis"
-              placeholder="Synopsis"
+              value={news.synopsis}
             />
             <label htmlFor="url">URL</label>
             <input
@@ -52,20 +62,20 @@ const NewsForm = props => {
               required
               onChange={handleFieldChange}
               id="url"
-              placeholder="Article URL"
+              value={news.url}
             />
           </div>
           <div className="alignRight">
             <button
               type="button"
               disabled={isLoading}
-              onClick={constructNewArticle}
+              onClick={updateExistingNews}
             >Submit</button>
           </div>
         </fieldset>
       </form>
     </>
   );
-};
+}
 
-export default NewsForm
+export default NewsEditForm

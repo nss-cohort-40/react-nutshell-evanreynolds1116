@@ -15,5 +15,19 @@ export default {
         },
         body: JSON.stringify(newArticle)
     }).then(data => data.json())
-}
+  },
+  delete(id) {
+    return fetch(`${remoteURL}/news/${id}`, {
+      method: "DELETE"
+    }).then(result => result.json())
+  },
+  update(editedNews) {
+    return fetch(`${remoteURL}/news/${editedNews.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(editedNews)
+    }).then(data => data.json());
+  }
 }
