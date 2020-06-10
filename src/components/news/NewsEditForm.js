@@ -20,7 +20,8 @@ const NewsEditForm = props => {
       id: props.match.params.newsId,
       title: news.title,
       synopsis: news.synopsis,
-      url: news.url
+      url: news.url,
+      userId: sessionStorage.activeUser
     };
 
     NewsManager.update(editedNews)
@@ -40,36 +41,40 @@ const NewsEditForm = props => {
       <form>
         <fieldset>
           <div className="formgrid">
+            <input
+              type="text"
+              required
+              className="form-control"
+              onChange={handleFieldChange}
+              id="title"
+              value={news.title}
+            />
             <label htmlFor="title">Title</label>
             <input
               type="text"
               required
+              className="form-control"
               onChange={handleFieldChange}
-              id="title"
-              value={news.title}
+              id="synopsis"
+              value={news.synopsis}
             />
             <label htmlFor="synopsis">Synopsis</label>
             <input
               type="text"
               required
-              onChange={handleFieldChange}
-              id="synopsis"
-              value={news.synopsis}
-            />
-            <label htmlFor="url">URL</label>
-            <input
-              type="text"
-              required
+              className="form-control"
               onChange={handleFieldChange}
               id="url"
               value={news.url}
             />
+            <label htmlFor="url">URL</label>
           </div>
           <div className="alignRight">
             <button
               type="button"
               disabled={isLoading}
               onClick={updateExistingNews}
+              className="btn btn-primary"
             >Submit</button>
           </div>
         </fieldset>

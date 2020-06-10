@@ -40,9 +40,7 @@ const NewsList = props => {
       <h1>News</h1>
         {news.map(newz => {
         if (sessionStorage.activeUser == newz.userId) {
-        return <NewsCard key={newz.id} newz={newz} deleteNews={deleteNews} {...props}/>
-        } 
-        }
+        return <NewsCard key={newz.id} newz={newz} deleteNews={deleteNews} {...props}/>}}
         )}
       </div>
     </>

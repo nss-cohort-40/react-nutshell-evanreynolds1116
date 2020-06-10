@@ -6,6 +6,7 @@ import NewsForm from "./news/NewsForm";
 import TaskList from './tasks/TaskList';
 import TaskForm from './tasks/TaskForm'
 import NewsEditForm from './news/NewsEditForm'
+import NewsDetail from './news/NewsDetails'
 
 const isAuthenticated = () => sessionStorage.getItem("activeUser") !== null;
 
@@ -34,9 +35,13 @@ const ApplicationViews = (props) => {
         }}
       />
 
-      <Route path="/news/newsId(\d+)/edit" render={(props) => {
+      <Route exact path="/news/:newsId(\d+)" render={(props) => {
+        return <NewsDetail newsId={parseInt(props.match.params.newsId)} {...props} />
+      }} />
+
+      <Route path="/news/:newsId(\d+)/edit" render={(props) => {
         if (isAuthenticated()) {
-          return <NewsEditForm newsId={parseInt(props.match.params.newsId)} {...props} />
+          return <NewsEditForm {...props} />
         } else {
             return <Redirect to="/login" />;
           }
