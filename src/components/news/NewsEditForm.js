@@ -18,10 +18,10 @@ const NewsEditForm = props => {
     // This is an edit, so we need the id
     const editedNews = {
       id: props.match.params.newsId,
+      userId: sessionStorage.activeUser,
       title: news.title,
       synopsis: news.synopsis,
-      url: news.url,
-      userId: sessionStorage.activeUser
+      url: news.url
     };
 
     NewsManager.update(editedNews)

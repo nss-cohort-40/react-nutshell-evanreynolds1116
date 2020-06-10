@@ -36,7 +36,7 @@ const NewsDetail = props => {
       </div>
       <div className="news-card-btns">
        <button type="button" className="news-card-btn"
-        onClick={() => props.history.push(`/news/${news.id}/edit`)}>
+        onClick={() => props.history.push(`/news/${props.newsId}/edit`)}>
         Edit
         </button>
         <button type="button" className="news-card-btn" disabled={isLoading} onClick={handleDelete}>Delete</button>
