@@ -22,6 +22,7 @@ const Login = (props) => {
     Data.loginUser(credentials).then((result) => {
       if (result.length > 0) {
         sessionStorage.setItem("activeUser", result[0].id);
+        sessionStorage.setItem("credentials", result[0].username)
         props.history.push("/news");
       }
     });
@@ -30,6 +31,8 @@ const Login = (props) => {
   const handleRegister = (e) => {
     e.preventDefault();
 
+
+    sessionStorage.setItem("credentials", credentials.username)
     Data.saveNewUser(credentials).then(() => props.history.push("/news"));
   };
 

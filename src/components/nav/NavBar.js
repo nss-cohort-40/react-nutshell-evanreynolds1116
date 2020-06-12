@@ -9,6 +9,7 @@ const NavBar = (props) => {
     e.preventDefault();
 
     sessionStorage.removeItem("activeUser");
+    sessionStorage.removeItem("credentials")
     props.history.push("/login");
   };
 

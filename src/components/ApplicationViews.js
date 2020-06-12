@@ -3,21 +3,24 @@ import React from "react";
 import Login from "./auth/Login";
 import NewsList from "./news/NewsList";
 import NewsForm from "./news/NewsForm";
-import TaskList from './tasks/TaskList';
-import TaskForm from './tasks/TaskForm'
-import NewsEditForm from './news/NewsEditForm'
-import NewsDetail from './news/NewsDetails'
+import TaskList from "./tasks/TaskList";
+import TaskForm from "./tasks/TaskForm";
+import NewsEditForm from "./news/NewsEditForm";
+import NewsDetail from "./news/NewsDetails";
+import MessagesList from "./messages/MessagesList";
+import MessagesForm from "./messages/MessagesForm";
+import MessagesEditForm from "./messages/MessagesEditForm";
 
 const isAuthenticated = () => sessionStorage.getItem("activeUser") !== null;
 
 const ApplicationViews = (props) => {
-  
   return (
     <React.Fragment>
-      <Route path="/login" component={Login}/>
+      <Route path="/login" component={Login} />
 
       <Route
-        exact path="/news"
+        exact
+        path="/news"
         render={(props) => {
           if (isAuthenticated()) {
             return <NewsList {...props} />;
@@ -35,17 +38,29 @@ const ApplicationViews = (props) => {
         }}
       />
 
-      <Route exact path="/news/:newsId(\d+)" render={(props) => {
-        return <NewsDetail newsId={parseInt(props.match.params.newsId)} {...props} />
-      }} />
+      <Route
+        exact
+        path="/news/:newsId(\d+)"
+        render={(props) => {
+          return (
+            <NewsDetail
+              newsId={parseInt(props.match.params.newsId)}
+              {...props}
+            />
+          );
+        }}
+      />
 
-      <Route path="/news/:newsId(\d+)/edit" render={(props) => {
-        if (isAuthenticated()) {
-          return <NewsEditForm {...props} />
-        } else {
+      <Route
+        path="/news/:newsId(\d+)/edit"
+        render={(props) => {
+          if (isAuthenticated()) {
+            return <NewsEditForm {...props} />;
+          } else {
             return <Redirect to="/login" />;
           }
-      }} />
+        }}
+      />
 
       <Route
         path="/friends"
@@ -56,10 +71,37 @@ const ApplicationViews = (props) => {
       />
 
       <Route
+        exact
         path="/messages"
         render={(props) => {
-          return null;
+          if (isAuthenticated()) {
+            return <MessagesList {...props} />;
+          } else {
+            return <Redirect to="/login" />;
+          }
           // Remove null and return the component which will show the messages
+        }}
+      />
+
+      <Route
+        path="/messages/:messagesId(\d+)/edit"
+        render={(props) => {
+          if (isAuthenticated()) {
+            return <MessagesEditForm {...props} />;
+          } else {
+            return <Redirect to="/login" />;
+          }
+        }}
+      />
+
+      <Route
+        path="/messages/newMessage"
+        render={(props) => {
+          if (isAuthenticated()) {
+            return <MessagesForm {...props} />;
+          } else {
+            return <Redirect to="/login" />;
+          }
         }}
       />
 
@@ -69,19 +111,20 @@ const ApplicationViews = (props) => {
           if (isAuthenticated()) {
             return <TaskList {...props} />;
           } else {
-            return <Redirect to ="/login" />
+            return <Redirect to="/login" />;
           }
           // Remove null and return the component which will show the user's tasks
         }}
       />
 
-      <Route  
+      <Route
         path="/newTask"
         render={(props) => {
-          return <TaskForm {...props} />
-        }} />
+          return <TaskForm {...props} />;
+        }}
+      />
     </React.Fragment>
   );
 };
 
-export default ApplicationViews
+export default ApplicationViews;
